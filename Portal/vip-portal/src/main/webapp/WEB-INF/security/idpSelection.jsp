@@ -18,7 +18,7 @@
                     <p class="quiet large">Please select Identity Provider to authenticate with.</p>
                     <div class="post-body">
                         <%
-                            WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletConfig().getServletContext());
+                            WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletConfig().getServletContext(), "org.springframework.web.servlet.FrameworkServlet.CONTEXT.springSaml");
                             MetadataManager mm = context.getBean("metadata", MetadataManager.class);
                             Set<String> idps = mm.getIDPEntityNames();
                             pageContext.setAttribute("idp", idps);

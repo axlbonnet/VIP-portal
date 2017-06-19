@@ -17,7 +17,7 @@
                 <div class="section-content">
                     <div class="post">
                         <div class="post-title"><h2 class="label label-green">Authenticated user</h2></div>
-                        <p class="quiet large">Overview of the authenticated user's data.</p>
+                        <p class="quiet large">PLOP. Overview of the authenticated user's data.</p>
                         <div class="post-body">
                             <%
                                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

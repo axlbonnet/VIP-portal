@@ -204,24 +204,26 @@ knowledge of the CeCILL-B license and that you accept its terms.
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
     <filter>
-        <filter-name>RestAPIspringSecurityFilterChain</filter-name>
+        <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>contextAttribute</param-name>
+            <param-value>org.springframework.web.servlet.FrameworkServlet.CONTEXT.RestAPI</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>RestAPIspringSecurityFilterChain</filter-name>
+        <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/rest/*</url-pattern>
     </filter-mapping>
     <!-- END REST API -->
     <!-- SPRING SAML -->
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>
-            /WEB-INF/samlSecurityContext.xml
-        </param-value>
-    </context-param>
     <servlet>
         <servlet-name>springSaml</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/samlSecurityContext.xml</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
@@ -229,17 +231,21 @@ knowledge of the CeCILL-B license and that you accept its terms.
         <url-pattern>/saml/web/*</url-pattern>
     </servlet-mapping>
     <filter>
-        <filter-name>samlSpringSecurityFilterChain</filter-name>
+        <filter-name>samlFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>contextAttribute</param-name>
+            <param-value>org.springframework.web.servlet.FrameworkServlet.CONTEXT.springSaml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>targetBeanName</param-name>
+            <param-value>springSecurityFilterChain</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>samlSpringSecurityFilterChain</filter-name>
+        <filter-name>samlFilter</filter-name>
         <url-pattern>/saml/*</url-pattern>
     </filter-mapping>
-
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
     <!-- END SPRING SAML -->
     <!-- SOAP API -->
     <listener>

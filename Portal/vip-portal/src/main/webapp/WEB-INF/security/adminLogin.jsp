@@ -22,15 +22,16 @@
                                 <table>
                                     <tr>
                                         <td><label for="username">User:</label></td>
-                                        <td><input type='text' name='j_username' id="username" class="text" value='admin'></td>
+                                        <td><input type='text' name='username' id="username" class="text" value='admin'></td>
                                     </tr>
                                     <tr>
                                         <td><label for="password">Password:</label></td>
-                                        <td><input type='password' name='j_password' id="password" class="text" value="admin"/></td>
+                                        <td><input type='password' name='password' id="password" class="text" value="admin"/></td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td><input name="submit" class="button" type="submit" value="Login"/></td>
+                                        <td><input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+                                            <input name="submit" class="button" type="submit" value="Login"/></td>
                                     </tr>
                                 </table>
                             </form>

@@ -25,6 +25,7 @@
         <security:intercept-url pattern="/saml/web/metadata/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/saml/web/**" access="ROLE_ADMIN"/>
         <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
+        <security:csrf disabled="true"/>
     </security:http>
 
     <!-- Secured pages with SAML as entry point -->
@@ -32,6 +33,7 @@
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
         <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
         <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
+        <security:csrf disabled="true"/>
     </security:http>
 
     <!-- Filters for processing of SAML messages -->
@@ -41,7 +43,7 @@
             <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter"/>
             <security:filter-chain pattern="/saml/metadata/**" filters="metadataDisplayFilter"/>
             <security:filter-chain pattern="/saml/SSO/**" filters="samlWebSSOProcessingFilter"/>
-            <security:filter-chain pattern="/saml/SSOHoK/**" filters="samlWebSSOHoKProcessingFilter"/>
+            <!--security:filter-chain pattern="/saml/SSOHoK/**" filters="samlWebSSOHoKProcessingFilter"/-->
             <security:filter-chain pattern="/saml/SingleLogout/**" filters="samlLogoutProcessingFilter"/>
             <security:filter-chain pattern="/saml/discovery/**" filters="samlIDPDiscovery"/>
         </security:filter-chain-map>
@@ -101,6 +103,7 @@
     <bean id="samlEntryPoint" class="org.springframework.security.saml.SAMLEntryPoint">
         <property name="defaultProfileOptions">
             <bean class="org.springframework.security.saml.websso.WebSSOProfileOptions">
+                <property name="binding" value="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" />
                 <property name="includeScoping" value="false"/>
             </bean>
         </property>
@@ -115,13 +118,19 @@
     <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
         <constructor-arg>
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                <property name="entityId" value="urn:test:axel:lyon"/>
+                <property name="entityId" value="http://vip.creatis.insa-lyon.fr:4040/sp"/>
+                <property name="bindingsSSO"><list><value>post</value></list></property>
+                <property name="bindingsSLO"><list /></property>
+                <property name="bindingsHoKSSO"><list/></property>
                 <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
-                        <property name="signMetadata" value="false"/>
+                        <property name="signMetadata" value="true"/>
                         <property name="idpDiscoveryEnabled" value="true"/>
+                        <!--property name="idpDiscoveryURL" value="https://discovery.renater.fr/test" />
+                        <property name="idpDiscoveryResponseURL" value="http://vip.creatis.insa-lyon.fr:4040/saml/login" /-->
                     </bean>
                 </property>
+                <property name="includeDiscoveryExtension" value="true" />
             </bean>
         </constructor-arg>
     </bean>
@@ -144,7 +153,7 @@
                 <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
                     <!-- URL containing the metadata -->
                     <constructor-arg>
-                        <value type="java.lang.String">http://idp.ssocircle.com/idp-meta.xml</value>
+                        <value type="java.lang.String">https://metadata.federation.renater.fr/test/preview/preview-idps-renater-test-metadata.xml</value>
                     </constructor-arg>
                     <!-- Timeout for metadata loading in ms -->
                     <constructor-arg>

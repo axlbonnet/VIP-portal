@@ -30,8 +30,7 @@
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td><input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
-                                            <input name="submit" class="button" type="submit" value="Login"/></td>
+                                        <td><input name="submit" class="button" type="submit" value="Login"/></td>
                                     </tr>
                                 </table>
                             </form>

@@ -142,7 +142,7 @@ public class CoreConstants implements IsSerializable {
     public static final String FOLDER_TRASH = "Trash";
     public static final String FOLDER_FLAGS = IMG_FOLDER + "flags/";
     // Application Names
-    public static final String APP_ACCOUNT = "My Account";
+    public static final String APP_ACCOUNT = "My VIP Account";
     public static final String APP_ACCOUNT_MANAGER = "Accounts Type";
     public static final String APP_GROUP = "Groups";
     public static final String APP_TIP = "Tips";

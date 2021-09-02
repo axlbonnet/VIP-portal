@@ -118,10 +118,12 @@ public class DataController extends ApiController {
         logMethodInvocation(logger, "downloadFile", currentUser().getEmail(), completePath);
         // business call
         File file = dataApiBusiness.getFile(completePath);
+        logger.debug("download from grida over");
         FileSystemResource res = new FileSystemResource(file);
         HttpHeaders headers = new HttpHeaders();
         // TODO improve mime-type
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        logger.debug("returning file with spring");
         return new ResponseEntity<>(res, headers, HttpStatus.OK);
     }
 

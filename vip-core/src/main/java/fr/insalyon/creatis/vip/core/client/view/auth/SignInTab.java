@@ -31,14 +31,13 @@
  */
 package fr.insalyon.creatis.vip.core.client.view.auth;
 
-import com.google.gwt.core.client.Callback;
-import com.google.gwt.core.client.ScriptInjector;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ImageStyle;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
@@ -51,6 +50,7 @@ import com.smartgwt.client.widgets.form.fields.PasswordItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import fr.insalyon.creatis.vip.core.client.bean.User;
@@ -60,8 +60,6 @@ import fr.insalyon.creatis.vip.core.client.view.CoreConstants;
 import fr.insalyon.creatis.vip.core.client.view.layout.Layout;
 import fr.insalyon.creatis.vip.core.client.view.util.FieldUtil;
 import fr.insalyon.creatis.vip.core.client.view.util.WidgetUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -70,6 +68,14 @@ import org.slf4j.LoggerFactory;
 public class SignInTab extends Tab {
 
     private VLayout signinLayout;
+    private Label infoWelcomeVipLayout;
+    private Label infoVipLayout;
+    private Label infoVipLog;
+    private Label infoContactlayout;
+    private Label infoToolLayout;
+    private Label infoPublicationLayout;
+    private Label infoCodeSource;
+    private Label infoContactus;
     private DynamicForm newForm;
     private TextItem emailField;
     private PasswordItem passwordField;
@@ -81,20 +87,33 @@ public class SignInTab extends Tab {
         this.setID(CoreConstants.TAB_SIGNIN);
         this.setTitle("Sign In");
 
-        VLayout vLayout = new VLayout(10);
-        vLayout.setWidth100();
-        vLayout.setHeight100();
-        vLayout.setMargin(5);
-        vLayout.setOverflow(Overflow.AUTO);
-        vLayout.setAlign(Alignment.CENTER);
-        vLayout.setDefaultLayoutAlign(Alignment.CENTER);
+        VLayout loginVLayout = new VLayout(12);
+        loginVLayout.setShowEdges(true);
+        //loginVLayout.setEdgeShowCenter(true);
+        loginVLayout.setWidth100();
+        loginVLayout.setHeight100();
+        loginVLayout.setLayoutMargin(100);
+        //loginVLayout.setLayoutTopMargin(10);
+        loginVLayout.setOverflow(Overflow.AUTO);
+        loginVLayout.setAlign(Alignment.CENTER);
+        loginVLayout.setDefaultLayoutAlign(Alignment.CENTER);
+
 
         configureNewForm();
         configureSigninLayout();
-        vLayout.addMember(signinLayout);
-        vLayout.addMember(newForm);
+        testLayoutInfo();
+        loginVLayout.addMember(infoWelcomeVipLayout);
+        loginVLayout.addMember(infoVipLayout);
+        loginVLayout.addMember(infoContactus);
+        loginVLayout.addMember(infoVipLog);
+        loginVLayout.addMember(signinLayout);
+        loginVLayout.addMember(newForm);
+        loginVLayout.addMember(infoContactlayout);
+        loginVLayout.addMember(infoToolLayout);
+        loginVLayout.addMember(infoPublicationLayout);
+        loginVLayout.addMember(infoCodeSource);
 
-        this.setPane(vLayout);
+        this.setPane(loginVLayout);
     }
 
     private void configureSigninLayout() {
@@ -171,7 +190,7 @@ public class SignInTab extends Tab {
                 });
 
         newForm = FieldUtil.getForm(createAccount, recoverAccount, egiAccount);
-        newForm.setWidth(250);
+        newForm.setWidth(230);
     }
 
     private void signin() {
@@ -218,5 +237,19 @@ public class SignInTab extends Tab {
                     passwordField.getValueAsString(), callback);
             WidgetUtil.setLoadingIButton(signinButton, "Signing in...");
         }
+    }
+
+    private void testLayoutInfo(){
+        infoWelcomeVipLayout = WidgetUtil.getLabel("Welcome on Virtual Imaging Platform !",20);
+        infoWelcomeVipLayout.setWidth(230);
+        infoWelcomeVipLayout.setStyleName("title");
+        infoVipLayout= WidgetUtil.getLabel("VIP is a web portal for medical imaging applications. It allows you to access scientific applications as a service (directly through your web browser with no installation required), as well as distributed computing resources in a transparent manner.", 20);
+        infoVipLog = WidgetUtil.getLabel("Please log in using the form below or the link to the EGI Checkin federated authentication service, or create a new account if you don't have one.",20);
+        infoContactlayout = WidgetUtil.getLabel("Documentation of Virtual Imaging Platform and its embedded applications is available here :  <a href=\"https://vip.creatis.insa-lyon.fr/documentation/\">Documentation VIP</a>",20);
+        infoToolLayout = WidgetUtil.getLabel("List of applications available on Virtual Imaging Platform here :  <a href=\"https://www.creatis.insa-lyon.fr/vip/applications.html\">Applications VIP</a>",20);
+        infoPublicationLayout = WidgetUtil.getLabel("The list of all publications related to Virtual Imaging Platform is here :  <a href=\"https://www.creatis.insa-lyon.fr/vip/more-publications.html\">Publications VIP</a>",20);
+        infoCodeSource = WidgetUtil.getLabel("Virtual Imaging Platform source code :  <a href=\"https://github.com/virtual-imaging-platform\">Github VIP</a>",20);
+        infoContactus = WidgetUtil.getLabel("This portal is exclusively dedicated to non-commercial academic use, as indicated in the <a href=\"https://vip.creatis.insa-lyon.fr/documentation/terms.html\">terms of use.</a> For commercial use, please contact us at vip-support@creatis.insa-lyon.fr.",20);
+
     }
 }
